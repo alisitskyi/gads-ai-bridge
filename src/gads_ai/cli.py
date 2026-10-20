@@ -40,7 +40,7 @@ GADS_DIR = Path.home() / '.gads'
 GADS_CREDS = GADS_DIR / 'credentials.json'
 GADS_TOKEN = GADS_DIR / 'token.json'
 GDOC_CREDS = Path.home() / '.gdoc' / 'credentials.json'
-API_VERSION = "v18"
+API_VERSION = "v22"
 
 
 def find_credentials_file() -> Path:
@@ -439,7 +439,7 @@ def main():
     # Config
     p_cfg = sub.add_parser("config", help="Set or view Google Ads configuration", parents=[common_parser])
     p_cfg.add_argument("--developer-token", help="Set Developer Token")
-    p_cfg.add_argument("--mcc-id", help="Set Login MCC Customer ID")
+    p_cfg.add_argument("--login-customer-id", "--mcc-id", dest="mcc_id", help="Set Login MCC Customer ID (login-customer-id)")
     p_cfg.add_argument("--customer-id", help="Set default target Customer ID")
 
     # Campaigns
