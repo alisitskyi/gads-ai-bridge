@@ -26,14 +26,14 @@ With `gads-ai-bridge`:
 
 **Windows (PowerShell):**
 ```powershell
-git clone https://github.com/<your-username>/gads-ai-bridge.git
+git clone https://github.com/alisitskyi/gads-ai-bridge.git
 cd gads-ai-bridge
 .\install.ps1
 ```
 
 **macOS / Linux:**
 ```bash
-git clone https://github.com/<your-username>/gads-ai-bridge.git
+git clone https://github.com/alisitskyi/gads-ai-bridge.git
 cd gads-ai-bridge
 chmod +x install.sh
 ./install.sh
