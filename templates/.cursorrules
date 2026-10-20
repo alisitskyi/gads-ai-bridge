@@ -1,0 +1,7 @@
+# Cursor Rules for Google Ads Integration
+
+When asked about Google Ads, PPC performance, campaigns, or negative keyword mining:
+- Use the `gads` CLI in the terminal to query live Google Ads data via GAQL.
+- Use `gads campaigns --customer-id <CID>` for campaign overview.
+- Use `gads search-terms --customer-id <CID> --zero-conversions` to identify wasted spend.
+- Use `--json` to inspect raw programmatic responses.
