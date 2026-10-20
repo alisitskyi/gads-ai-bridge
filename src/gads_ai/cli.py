@@ -40,7 +40,7 @@ GADS_DIR = Path.home() / '.gads'
 GADS_CREDS = GADS_DIR / 'credentials.json'
 GADS_TOKEN = GADS_DIR / 'token.json'
 GDOC_CREDS = Path.home() / '.gdoc' / 'credentials.json'
-API_VERSION = "v22"
+API_VERSION = "v24"
 
 
 def find_credentials_file() -> Path:
@@ -142,7 +142,7 @@ def get_credentials(profile: str = "default") -> Credentials:
     return creds
 
 
-def execute_gaql(customer_id: str, query: str, profile: str = "default") -> List[Dict[str, Any]]:
+def execute_gaql(customer_id: str, query: str, profile: str = "default", login_customer_id: Optional[str] = None) -> List[Dict[str, Any]]:
     """Execute a GAQL query via Google Ads REST API searchStream."""
     creds = get_credentials(profile)
     if not creds.valid:
@@ -169,7 +169,8 @@ def execute_gaql(customer_id: str, query: str, profile: str = "default") -> List
         "Content-Type": "application/json"
     }
 
-    login_cid = clean_customer_id(config.get("login_customer_id", ""))
+    raw_login_cid = login_customer_id or config.get("login_customer_id", "")
+    login_cid = clean_customer_id(raw_login_cid)
     if login_cid:
         headers["login-customer-id"] = login_cid
 
@@ -293,7 +294,7 @@ def cmd_campaigns(args):
     ORDER BY metrics.cost_micros DESC
     """
 
-    results = execute_gaql(cid, query, prof)
+    results = execute_gaql(cid, query, prof, getattr(args, 'mcc_id', None))
     headers = ["Campaign", "Status", "Type", "Cost", "Clicks", "Impressions", "Conversions", "Conv. Value"]
     rows = []
 
@@ -337,7 +338,7 @@ def cmd_search_terms(args):
     LIMIT {args.limit or 100}
     """
 
-    results = execute_gaql(cid, query, prof)
+    results = execute_gaql(cid, query, prof, getattr(args, 'mcc_id', None))
     headers = ["Search Term", "Campaign", "Cost", "Clicks", "Conversions"]
     rows = []
 
@@ -384,7 +385,7 @@ def cmd_keywords(args):
     LIMIT {args.limit or 100}
     """
 
-    results = execute_gaql(cid, query, prof)
+    results = execute_gaql(cid, query, prof, getattr(args, 'mcc_id', None))
     headers = ["Keyword", "Match Type", "Campaign", "Cost", "Clicks", "Conversions"]
     rows = []
 
@@ -410,7 +411,7 @@ def cmd_keywords(args):
 def cmd_query(args):
     prof = getattr(args, 'profile', 'default')
     cid = clean_customer_id(args.customer_id)
-    results = execute_gaql(cid, args.query, prof)
+    results = execute_gaql(cid, args.query, prof, getattr(args, 'mcc_id', None))
 
     if args.json:
         print(json.dumps(results, indent=2, ensure_ascii=False))
@@ -424,6 +425,7 @@ def cmd_query(args):
 def main():
     common_parser = argparse.ArgumentParser(add_help=False)
     common_parser.add_argument("--profile", default="default", help="Google Ads account profile name (e.g. 'work', 'client')")
+    common_parser.add_argument("--login-customer-id", "--mcc-id", dest="mcc_id", help="Override Login MCC Customer ID")
 
     parser = argparse.ArgumentParser(
         prog="gads",
@@ -439,7 +441,6 @@ def main():
     # Config
     p_cfg = sub.add_parser("config", help="Set or view Google Ads configuration", parents=[common_parser])
     p_cfg.add_argument("--developer-token", help="Set Developer Token")
-    p_cfg.add_argument("--login-customer-id", "--mcc-id", dest="mcc_id", help="Set Login MCC Customer ID (login-customer-id)")
     p_cfg.add_argument("--customer-id", help="Set default target Customer ID")
 
     # Campaigns
