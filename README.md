@@ -66,7 +66,7 @@ chmod +x install.sh
 You can authenticate multiple Google accounts in parallel. Each profile maintains isolated OAuth tokens and settings in `~/.gads/`:
 
 ```powershell
-# Account 1 (Default / SellerLogic):
+# Account 1 (Default / SELLERLOGIC):
 gads auth
 gads config --customer-id "168-927-0028" --login-customer-id "324-029-4849"
 
@@ -82,7 +82,7 @@ gads config --profile helpcrunch --customer-id "994-801-3362" --login-customer-i
 ### 1. Campaign Overview
 List campaigns with spend, clicks, impressions, and conversions:
 ```bash
-# Uses default profile (SellerLogic):
+# Uses default profile (SELLERLOGIC):
 gads campaigns
 
 # Query another profile (HelpCrunch):
@@ -131,7 +131,7 @@ Add to `.claude/settings.json` or `.cursorrules`:
 
 Prompt examples for AI assistants:
 - *"Audit search terms for HelpCrunch that spent over $20 with zero conversions using `gads search-terms --profile helpcrunch` and propose a negative keyword list."*
-- *"Show active Google Ads campaigns and performance for SellerLogic using `gads campaigns`."*
+- *"Show active Google Ads campaigns and performance for SELLERLOGIC using `gads campaigns`."*
 - *"Compare keyword CPCs and conversions for HelpCrunch with `gads keywords --profile helpcrunch`."*
 
 ---
