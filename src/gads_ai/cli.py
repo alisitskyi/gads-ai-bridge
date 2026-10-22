@@ -424,7 +424,7 @@ def cmd_query(args):
 
 def main():
     common_parser = argparse.ArgumentParser(add_help=False)
-    common_parser.add_argument("--profile", default="default", help="Google Ads account profile name (e.g. 'work', 'client')")
+    common_parser.add_argument("--profile", default=argparse.SUPPRESS, help="Google Ads account profile name (e.g. 'work', 'client')")
     common_parser.add_argument("--login-customer-id", "--mcc-id", dest="mcc_id", help="Override Login MCC Customer ID")
 
     parser = argparse.ArgumentParser(
